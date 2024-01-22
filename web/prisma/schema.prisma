@@ -17,3 +17,10 @@ model Session {
   accessToken String
   userId      BigInt?
 }
+
+model SavedCart {
+  id            Int    @id @default(autoincrement())
+  checkoutToken String @unique
+  products      Json
+}
+

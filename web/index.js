@@ -2,6 +2,9 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import express from 'express';
 import serveStatic from 'serve-static';
+import routers from './routers.js';
+
+import bodyParser from 'body-parser';
 
 import shopify from './shopify.js';
 import webhooks from './webhooks.js';
@@ -14,6 +17,7 @@ const STATIC_PATH =
 		: `${process.cwd()}/frontend/`;
 
 const app = express();
+
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -28,7 +32,8 @@ app.post(
 	shopify.processWebhooks({ webhookHandlers: webhooks })
 );
 
-// All endpoints after this point will require an active session
+app.use(bodyParser.json());
+app.use('/api', routers);
 app.use('/api/*', shopify.validateAuthenticatedSession());
 
 app.use(express.json());
