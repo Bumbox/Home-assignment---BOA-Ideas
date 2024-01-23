@@ -32,9 +32,8 @@ app.post(
 );
 
 
-app.use(bodyParser.json());
 app.use('/api/*', shopify.validateAuthenticatedSession());
-app.use('/api', routers);
+app.use('/api', bodyParser.json(), routers);
 
 
 app.use(express.json());

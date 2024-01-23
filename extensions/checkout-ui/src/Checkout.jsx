@@ -16,13 +16,10 @@ export default reactExtension('purchase.checkout.block.render', () => <Extension
 function Extension() {
 	const { checkoutToken, sessionToken, lines } = useApi();
 	const [checkedItems, setCheckedItems] = useState([]);
-	const [deletion, setDeletion] = useState(false);
 	const [checkedStates, setCheckedStates] = useState({});
-	const [isLoadingSav, setIsLoadingSav] = useState(false);
-	const [isLoadingDel, setIsLoadingDel] = useState(false);
+	const [isLoading, setIsLoading] = useState({ sav: false, del: false });
 
 	const checkedList = (item) => {
-		setDeletion(true);
 		setCheckedStates((prevStates) => ({
 			...prevStates,
 			[item]: !prevStates[item],
@@ -39,71 +36,60 @@ function Extension() {
 		});
 	};
 
-	const deleteCart = async () => {
-		setIsLoadingDel(true);
-		setCheckedStates({});
-		setCheckedItems([]);
-		setDeletion(false);
-		const token = await sessionToken.get();
-		console.log('sessionToken.get()', token);
-		fetch('https://bras-establish-firewall-departments.trycloudflare.com/api/deleteCart', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({
-				checkoutToken: checkoutToken.current,
-			}),
-		})
-			.then((response) => {
-				setIsLoadingDel(false);
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
+	const performFetch = async (url, body, action) => {
+		setIsLoading((prevState) => ({ ...prevState, [action]: true }));
+		try {
+			const token = await sessionToken.get();
+			const response = await fetch(
+				`https://bras-establish-firewall-departments.trycloudflare.com/api/${url}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(body),
 				}
-				return response.json();
-			})
-			.then((data) => {
-				console.log(data);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+			);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return await response.json();
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			setIsLoading((prevState) => ({ ...prevState, [action]: false }));
+		}
 	};
 
 	const handleSave = async () => {
-		setIsLoadingSav(true);
-		const token = await sessionToken.get();
-		console.log('sessionToken.get()', token);
-		fetch('https://bras-establish-firewall-departments.trycloudflare.com/api/addCart', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({
+		const data = await performFetch(
+			'addCart',
+			{
 				checkoutToken: checkoutToken.current,
 				productIds: checkedItems,
-			}),
-		})
-			.then((response) => {
-				setIsLoadingSav(false);
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				return response.json();
-			})
-			.then((data) => {
-				console.log(data);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+			},
+			'sav'
+		);
+		console.log(data);
+	};
+
+	const deleteCart = async () => {
+		setCheckedStates({});
+		setCheckedItems([]);
+		const data = await performFetch(
+			'deleteCart',
+			{
+				checkoutToken: checkoutToken.current,
+			},
+			'del'
+		);
+		console.log(data);
 	};
 
 	return (
 		<>
-			<Banner title="Save your cart" status="info" >
+			<Banner title="Save your cart" status="info">
 				<BlockStack spacing="none">
 					{lines.current.map((line, index) => (
 						<View key={index} border="none" padding={['base', 'none']}>
@@ -123,14 +109,19 @@ function Extension() {
 						<Button
 							onPress={handleSave}
 							disabled={checkedItems.length === 0}
-							loading={isLoadingSav}
-							
+							loading={isLoading.sav}
 						>
 							Save
 						</Button>
 					</View>
 					<View border="base" padding="none" blockAlignment="center">
-						<Button onPress={deleteCart} kind="plain" loading={isLoadingDel} border="none" appearance="subdued">
+						<Button
+							onPress={deleteCart}
+							kind="plain"
+							loading={isLoading.del}
+							border="none"
+							appearance="subdued"
+						>
 							Clear saved cart
 						</Button>
 					</View>
