@@ -18,7 +18,6 @@ const STATIC_PATH =
 
 const app = express();
 
-
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
 app.get(
@@ -32,9 +31,19 @@ app.post(
 	shopify.processWebhooks({ webhookHandlers: webhooks })
 );
 
+
 app.use(bodyParser.json());
-app.use('/api', routers);
 app.use('/api/*', shopify.validateAuthenticatedSession());
+app.use('/api', routers);
+app.use((err, req, res, next) => {
+	if (err.message === 'Session was not valid') {
+		const shop = req.query.shop;
+		return res.redirect(`/api/auth?shop=${shop}`);
+	}
+
+	// Обработка других типов ошибок
+	next(err);
+});
 
 app.use(express.json());
 

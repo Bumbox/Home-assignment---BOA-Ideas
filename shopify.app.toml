@@ -2,7 +2,7 @@
 
 name = "boa-home-task-SS"
 client_id = "8a561d6b520e82170b801c4d8d1d45bb"
-application_url = "https://adoption-ups-sir-jews.trycloudflare.com"
+application_url = "https://dollar-participate-discover-tradition.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "read_customers"
 
 [auth]
 redirect_urls = [
-  "https://adoption-ups-sir-jews.trycloudflare.com/auth/callback",
-  "https://adoption-ups-sir-jews.trycloudflare.com/auth/shopify/callback",
-  "https://adoption-ups-sir-jews.trycloudflare.com/api/auth/callback",
-  "https://adoption-ups-sir-jews.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://dollar-participate-discover-tradition.trycloudflare.com/auth/callback",
+  "https://dollar-participate-discover-tradition.trycloudflare.com/auth/shopify/callback",
+  "https://dollar-participate-discover-tradition.trycloudflare.com/api/auth/callback",
+  "https://dollar-participate-discover-tradition.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

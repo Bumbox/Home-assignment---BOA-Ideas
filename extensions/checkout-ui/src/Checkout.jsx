@@ -8,7 +8,6 @@ import {
 	BlockStack,
 	View,
 	useApi,
-	useTranslate,
 	reactExtension,
 } from '@shopify/ui-extensions-react/checkout';
 
@@ -18,17 +17,16 @@ function Extension() {
 	const { checkoutToken, sessionToken, lines } = useApi();
 	const [checkedItems, setCheckedItems] = useState({});
 
-	const getInfo = () => {
+	const getInfo = async () => {
 		console.log(checkoutToken);
-		const products = lines.current.map((item) => item.id);
-		console.log(products);
+		console.log(lines.current[0].merchandise.title);
 	};
 
 	const handleSave = async () => {
 		const products = lines.current.map((item) => item.id);
 		const token = await sessionToken.get();
 		console.log('sessionToken.get()', token);
-		fetch('https://adoption-ups-sir-jews.trycloudflare.com/api/example', {
+		fetch('https://dollar-participate-discover-tradition.trycloudflare.com/api/example', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json', // Указание типа контента
@@ -53,8 +51,6 @@ function Extension() {
 				console.error('Error:', error); // Обработка ошибок
 			});
 	};
-
-	const translate = useTranslate();
 
 	return (
 		<>

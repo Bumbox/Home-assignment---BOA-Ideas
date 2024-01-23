@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post('/example', async (req, res) => {
 	const { checkoutToken, productIds } = req.body;
-
 	try {
 		const savedCart = await prisma.savedCart.create({
 			data: {
@@ -18,6 +17,7 @@ router.post('/example', async (req, res) => {
 		res.json(savedCart);
 	} catch (error) {
 		console.error('Error:', error);
+		// eslint-disable-next-line no-magic-numbers
 		res.status(500).json({ error: 'Internal server error' });
 	}
 });
