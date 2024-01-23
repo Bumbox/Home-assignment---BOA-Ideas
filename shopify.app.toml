@@ -2,7 +2,7 @@
 
 name = "boa-home-task-SS"
 client_id = "8a561d6b520e82170b801c4d8d1d45bb"
-application_url = "https://newest-nowhere-calculate-extremely.trycloudflare.com"
+application_url = "https://bras-establish-firewall-departments.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "read_customers"
 
 [auth]
 redirect_urls = [
-  "https://newest-nowhere-calculate-extremely.trycloudflare.com/auth/callback",
-  "https://newest-nowhere-calculate-extremely.trycloudflare.com/auth/shopify/callback",
-  "https://newest-nowhere-calculate-extremely.trycloudflare.com/api/auth/callback",
-  "https://newest-nowhere-calculate-extremely.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://bras-establish-firewall-departments.trycloudflare.com/auth/callback",
+  "https://bras-establish-firewall-departments.trycloudflare.com/auth/shopify/callback",
+  "https://bras-establish-firewall-departments.trycloudflare.com/api/auth/callback",
+  "https://bras-establish-firewall-departments.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

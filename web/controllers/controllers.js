@@ -1,6 +1,6 @@
 import * as ExampleModel from '../models/models.js';
 
-export const handleExamplePost = async (req, res) => {
+export const handleCartPost = async (req, res) => {
 	try {
 		const { checkoutToken, productIds } = req.body;
 		const productsJson = JSON.stringify(productIds);
@@ -14,7 +14,7 @@ export const handleExamplePost = async (req, res) => {
 
 export const handleDeleteCheckout = async (req, res) => {
 	try {
-		const { checkoutToken } = req.params;
+		const { checkoutToken } = req.body;
 		await ExampleModel.deleteCartByToken(checkoutToken);
 		res.status(200).json({ message: 'Cart deleted successfully' });
 	} catch (error) {

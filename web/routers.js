@@ -1,10 +1,10 @@
 import express from 'express';
-import { handleDeleteCheckout, handleExamplePost } from './controllers/controllers.js';
+import { handleDeleteCheckout, handleCartPost } from './controllers/controllers.js';
 
 const router = express.Router();
 
-router.post('/example', handleExamplePost);
+router.post('/addCart', handleCartPost);
 
-router.delete('/api/delete/:checkoutId', handleDeleteCheckout);
+router.post('/deleteCart', handleDeleteCheckout);
 
 export default router;
