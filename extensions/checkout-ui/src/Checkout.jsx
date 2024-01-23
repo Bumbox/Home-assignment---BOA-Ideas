@@ -15,11 +15,28 @@ export default reactExtension('purchase.checkout.block.render', () => <Extension
 
 function Extension() {
 	const { checkoutToken, sessionToken, lines } = useApi();
-	const [checkedItems, setCheckedItems] = useState({});
+	const [checkedItems, setCheckedItems] = useState([]);
+	const [deletation, setDeletation] = useState(false);
+
+	const checkedList = (item) => {
+		setDeletation(true);
+		setCheckedItems((prevItems) => {
+			let updatedItems;
+
+			if (prevItems.includes(item)) {
+				updatedItems = prevItems.filter((currentItem) => currentItem !== item);
+			} else {
+				updatedItems = [...prevItems, item];
+			}
+
+			// Удаление дубликатов
+			return [...new Set(updatedItems)];
+		});
+	};
 
 	const getInfo = async () => {
-		console.log(checkoutToken);
-		console.log(lines.current[0].merchandise.title);
+		console.log(checkedItems);
+		setDeletation(false)
 	};
 
 	const handleSave = async () => {
@@ -35,7 +52,7 @@ function Extension() {
 			},
 			body: JSON.stringify({
 				checkoutToken: checkoutToken.current,
-				productIds: products,
+				productIds: checkedItems,
 			}),
 		})
 			.then((response) => {
@@ -56,19 +73,24 @@ function Extension() {
 		<>
 			<Banner title="Save your cart">
 				<BlockStack spacing="none">
-					<View border="none" padding="tight">
-						<Checkbox id="videographerSnowboard" name="checkbox">
-							{lines.current[0].merchandise.title}
-						</Checkbox>
-					</View>
-					<View border="none" padding="tight">
-						<Checkbox id="multiLocationSnowboard" name="checkbox">
-							The Multi-location Snowboard
-						</Checkbox>
-					</View>
+					{lines.current.map((line, index) => (
+						<View key={index} border="none" padding="tight">
+							<Checkbox
+								id={`Checkbox-${index}`}
+								name="checkbox"
+								onChange={() => checkedList(line.merchandise.id)}
+							>
+								{line.merchandise.title}
+							</Checkbox>
+						</View>
+					))}
 				</BlockStack>
-				<Button onPress={handleSave}>Save</Button>
-				<Button onPress={getInfo}>Get info</Button>
+				<Button onPress={handleSave} disabled={checkedItems.length === 0}>
+					Save
+				</Button>
+				<Button onPress={getInfo} disabled={checkedItems.length !== 0 || !deletation}>
+					Delete saved
+				</Button>
 			</Banner>
 		</>
 	);
