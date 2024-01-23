@@ -58,7 +58,7 @@ function Extension() {
 				<BlockStack spacing="none">
 					<View border="none" padding="tight">
 						<Checkbox id="videographerSnowboard" name="checkbox">
-							The Videographer Snowboard
+							{lines.current[0].merchandise.title}
 						</Checkbox>
 					</View>
 					<View border="none" padding="tight">

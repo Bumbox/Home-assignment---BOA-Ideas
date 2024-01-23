@@ -6,18 +6,23 @@ const router = express.Router();
 
 router.post('/example', async (req, res) => {
 	const { checkoutToken, productIds } = req.body;
+
 	try {
-		const savedCart = await prisma.savedCart.create({
-			data: {
+		// Преобразование productIds в строку JSON
+		const productsJson = JSON.stringify(productIds);
+
+		const savedCart = await prisma.savedCart.upsert({
+			where: { checkoutToken: checkoutToken },
+			update: { products: productsJson },
+			create: {
 				checkoutToken: checkoutToken,
-				products: JSON.stringify(productIds), // Преобразование массива в JSON-строку
+				products: productsJson,
 			},
 		});
 
 		res.json(savedCart);
 	} catch (error) {
 		console.error('Error:', error);
-		// eslint-disable-next-line no-magic-numbers
 		res.status(500).json({ error: 'Internal server error' });
 	}
 });
