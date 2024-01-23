@@ -39,25 +39,24 @@ function Extension() {
 		fetch('https://bras-establish-firewall-departments.trycloudflare.com/api/deleteCart', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json', // Указание типа контента
-				Authorization: `Bearer ${token}`, // Пример заголовка авторизации
-				// Другие заголовки можно добавить здесь
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
-				checkoutToken: checkoutToken.current
+				checkoutToken: checkoutToken.current,
 			}),
 		})
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
-				return response.json(); // Преобразование ответа в JSON
+				return response.json();
 			})
 			.then((data) => {
-				console.log(data); // Обработка данных из ответа
+				console.log(data);
 			})
 			.catch((error) => {
-				console.error('Error:', error); // Обработка ошибок
+				console.error('Error:', error);
 			});
 	};
 
@@ -67,9 +66,8 @@ function Extension() {
 		fetch('https://bras-establish-firewall-departments.trycloudflare.com/api/addCart', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json', // Указание типа контента
-				Authorization: `Bearer ${token}`, // Пример заголовка авторизации
-				// Другие заголовки можно добавить здесь
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
 				checkoutToken: checkoutToken.current,
@@ -80,13 +78,13 @@ function Extension() {
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
-				return response.json(); // Преобразование ответа в JSON
+				return response.json();
 			})
 			.then((data) => {
-				console.log(data); // Обработка данных из ответа
+				console.log(data);
 			})
 			.catch((error) => {
-				console.error('Error:', error); // Обработка ошибок
+				console.error('Error:', error);
 			});
 	};
 
@@ -95,7 +93,7 @@ function Extension() {
 			<Banner title="Save your cart">
 				<BlockStack spacing="none">
 					{lines.current.map((line, index) => (
-						<View key={index} border="none" padding="tight" >
+						<View key={index} border="none" padding="tight">
 							<Checkbox
 								id={`Checkbox-${index}`}
 								name="checkbox"

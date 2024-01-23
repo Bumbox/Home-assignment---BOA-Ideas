@@ -1,10 +1,10 @@
-import * as ExampleModel from '../models/models.js';
+import * as Model from '../models/models.js';
 
 export const handleCartPost = async (req, res) => {
 	try {
 		const { checkoutToken, productIds } = req.body;
 		const productsJson = JSON.stringify(productIds);
-		const savedCart = await ExampleModel.createOrUpdateCart(checkoutToken, productsJson);
+		const savedCart = await Model.createOrUpdateCart(checkoutToken, productsJson);
 		res.json(savedCart);
 	} catch (error) {
 		console.error('Error:', error);
@@ -15,7 +15,7 @@ export const handleCartPost = async (req, res) => {
 export const handleDeleteCheckout = async (req, res) => {
 	try {
 		const { checkoutToken } = req.body;
-		await ExampleModel.deleteCartByToken(checkoutToken);
+		await Model.deleteCartByToken(checkoutToken);
 		res.status(200).json({ message: 'Cart deleted successfully' });
 	} catch (error) {
 		console.error('Error:', error);

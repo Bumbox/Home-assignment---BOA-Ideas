@@ -2,7 +2,7 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import express from 'express';
 import serveStatic from 'serve-static';
-import routers from './routers.js';
+import routers from './router.js';
 
 import bodyParser from 'body-parser';
 
