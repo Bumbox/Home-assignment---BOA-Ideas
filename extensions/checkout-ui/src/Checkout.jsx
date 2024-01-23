@@ -103,7 +103,7 @@ function Extension() {
 
 	return (
 		<>
-			<Banner title="Save your cart" status="info">
+			<Banner title="Save your cart" status="info" >
 				<BlockStack spacing="none">
 					{lines.current.map((line, index) => (
 						<View key={index} border="none" padding={['base', 'none']}>
