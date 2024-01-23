@@ -16,7 +16,7 @@ export const handleDeleteCheckout = async (req, res) => {
 	try {
 		const { checkoutToken } = req.body;
 		await Model.deleteCartByToken(checkoutToken);
-		res.status(200).json({ message: 'Cart deleted successfully' });
+		res.status(200).json({ message: 'Cart successfully deleted or not found' });
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).send('Error deleting cart');

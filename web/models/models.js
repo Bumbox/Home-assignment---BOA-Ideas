@@ -10,7 +10,15 @@ export const createOrUpdateCart = async (checkoutToken, productsJson) => {
 };
 
 export const deleteCartByToken = async (checkoutToken) => {
-	return prisma.savedCart.delete({
+	const cart = await prisma.savedCart.findUnique({
 		where: { checkoutToken },
 	});
+
+	if (cart) {
+		return prisma.savedCart.delete({
+			where: { checkoutToken },
+		});
+	}
+
+	return { message: 'Cart successfully deleted or not found' };
 };

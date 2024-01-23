@@ -1,4 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
 import React, { useState } from 'react';
 
 import {
@@ -8,6 +7,7 @@ import {
 	BlockStack,
 	View,
 	useApi,
+	InlineLayout,
 	reactExtension,
 } from '@shopify/ui-extensions-react/checkout';
 
@@ -17,9 +17,16 @@ function Extension() {
 	const { checkoutToken, sessionToken, lines } = useApi();
 	const [checkedItems, setCheckedItems] = useState([]);
 	const [deletion, setDeletion] = useState(false);
+	const [checkedStates, setCheckedStates] = useState({});
+	const [isLoadingSav, setIsLoadingSav] = useState(false);
+	const [isLoadingDel, setIsLoadingDel] = useState(false);
 
 	const checkedList = (item) => {
 		setDeletion(true);
+		setCheckedStates((prevStates) => ({
+			...prevStates,
+			[item]: !prevStates[item],
+		}));
 		setCheckedItems((prevItems) => {
 			let updatedItems;
 
@@ -33,6 +40,9 @@ function Extension() {
 	};
 
 	const deleteCart = async () => {
+		setIsLoadingDel(true);
+		setCheckedStates({});
+		setCheckedItems([]);
 		setDeletion(false);
 		const token = await sessionToken.get();
 		console.log('sessionToken.get()', token);
@@ -47,6 +57,7 @@ function Extension() {
 			}),
 		})
 			.then((response) => {
+				setIsLoadingDel(false);
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
@@ -61,6 +72,7 @@ function Extension() {
 	};
 
 	const handleSave = async () => {
+		setIsLoadingSav(true);
 		const token = await sessionToken.get();
 		console.log('sessionToken.get()', token);
 		fetch('https://bras-establish-firewall-departments.trycloudflare.com/api/addCart', {
@@ -75,6 +87,7 @@ function Extension() {
 			}),
 		})
 			.then((response) => {
+				setIsLoadingSav(false);
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
 				}
@@ -90,13 +103,14 @@ function Extension() {
 
 	return (
 		<>
-			<Banner title="Save your cart">
+			<Banner title="Save your cart" status="info">
 				<BlockStack spacing="none">
 					{lines.current.map((line, index) => (
-						<View key={index} border="none" padding="tight">
+						<View key={index} border="none" padding={['base', 'none']}>
 							<Checkbox
 								id={`Checkbox-${index}`}
 								name="checkbox"
+								checked={checkedStates[line.merchandise.id] || false}
 								onChange={() => checkedList(line.merchandise.id)}
 							>
 								{line.merchandise.title}
@@ -104,12 +118,23 @@ function Extension() {
 						</View>
 					))}
 				</BlockStack>
-				<Button onPress={handleSave} disabled={checkedItems.length === 0}>
-					Saves
-				</Button>
-				<Button onPress={deleteCart} disabled={checkedItems.length !== 0 || !deletion}>
-					Clear saved cart
-				</Button>
+				<InlineLayout columns={['15%', '30%']} padding={['tight', 'none', 'none', 'none']}>
+					<View border="none" padding="none">
+						<Button
+							onPress={handleSave}
+							disabled={checkedItems.length === 0}
+							loading={isLoadingSav}
+							
+						>
+							Save
+						</Button>
+					</View>
+					<View border="base" padding="none" blockAlignment="center">
+						<Button onPress={deleteCart} kind="plain" loading={isLoadingDel} border="none" appearance="subdued">
+							Clear saved cart
+						</Button>
+					</View>
+				</InlineLayout>
 			</Banner>
 		</>
 	);
