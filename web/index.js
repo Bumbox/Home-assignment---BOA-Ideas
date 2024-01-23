@@ -35,15 +35,7 @@ app.post(
 app.use(bodyParser.json());
 app.use('/api/*', shopify.validateAuthenticatedSession());
 app.use('/api', routers);
-app.use((err, req, res, next) => {
-	if (err.message === 'Session was not valid') {
-		const shop = req.query.shop;
-		return res.redirect(`/api/auth?shop=${shop}`);
-	}
 
-	// Обработка других типов ошибок
-	next(err);
-});
 
 app.use(express.json());
 

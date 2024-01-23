@@ -28,22 +28,43 @@ function Extension() {
 			} else {
 				updatedItems = [...prevItems, item];
 			}
-
-			// Удаление дубликатов
 			return [...new Set(updatedItems)];
 		});
 	};
 
-	const getInfo = async () => {
-		console.log(checkedItems);
-		setDeletation(false)
+	const deleteCart = async () => {
+		setDeletation(false);
+		const token = await sessionToken.get();
+		console.log('sessionToken.get()', token);
+		fetch(
+			`https://newest-nowhere-calculate-extremely.trycloudflare.com/api/delete/${checkoutToken.current}`,
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json', // Указание типа контента
+					Authorization: `Bearer ${token}`, // Пример заголовка авторизации
+					// Другие заголовки можно добавить здесь
+				},
+			}
+		)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json(); // Преобразование ответа в JSON
+			})
+			.then((data) => {
+				console.log(data); // Обработка данных из ответа
+			})
+			.catch((error) => {
+				console.error('Error:', error); // Обработка ошибок
+			});
 	};
 
 	const handleSave = async () => {
-		const products = lines.current.map((item) => item.id);
 		const token = await sessionToken.get();
 		console.log('sessionToken.get()', token);
-		fetch('https://dollar-participate-discover-tradition.trycloudflare.com/api/example', {
+		fetch('https://newest-nowhere-calculate-extremely.trycloudflare.com/api/example', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json', // Указание типа контента
@@ -88,7 +109,7 @@ function Extension() {
 				<Button onPress={handleSave} disabled={checkedItems.length === 0}>
 					Save
 				</Button>
-				<Button onPress={getInfo} disabled={checkedItems.length !== 0 || !deletation}>
+				<Button onPress={deleteCart} disabled={checkedItems.length !== 0 || !deletation}>
 					Delete saved
 				</Button>
 			</Banner>
