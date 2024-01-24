@@ -41,7 +41,7 @@ function Extension() {
 		try {
 			const token = await sessionToken.get();
 			const response = await fetch(
-				`https://bras-establish-firewall-departments.trycloudflare.com/api/${url}`,
+				`https://feb-lake-earth-colon.trycloudflare.com/api/${url}`,
 				{
 					method: 'POST',
 					headers: {
