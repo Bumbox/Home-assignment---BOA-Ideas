@@ -1,5 +1,7 @@
 # Shopify App Template - Node
 
+In case that we are using temp links we must take part of redirect_url from shopify.app.toml after app launched to connect API
+
 This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using Node and React. It contains the basics for building a Shopify app.
 
 
@@ -27,19 +29,17 @@ This modular architecture helps in maintaining a clean separation of concerns, m
 
 ## API Integration
 
-
-
 The component interacts with two main API endpoints:
 
     1. Save Selected Items
-        Endpoint: POST https://{redirect_urls}/api/addCart
+        Endpoint: POST https://{redirect_url}/api/addCart
         Payload:
             checkoutToken (String): Token representing the checkout session.
             productIds (Array): IDs of the selected products.
         Response: A confirmation message upon successful operation.
 
     2. Clear Saved Items
-        Endpoint: POST https://{redirect_urls}/api/deleteCart
+        Endpoint: POST https://{redirect_url}/api/deleteCart
         Payload:
             checkoutToken (String): Token representing the checkout session.
         Response: A confirmation message upon successful clearing of items.
