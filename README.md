@@ -2,7 +2,7 @@
 
 In case that we are using temp links we must take part of redirect_url from shopify.app.toml after app launched to connect API
 
-This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using Node and React. It contains the basics for building a Shopify app.
+This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using Node and React. It contains the basics for building a Shopify app. Also database placed localy and will created at this adress by prisma chema: mysql://root:@127.0.0.1:3306/boa_ideas_assignment
 
 
 ## Backend Architecture Overview
