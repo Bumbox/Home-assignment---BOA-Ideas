@@ -2,7 +2,7 @@
 
 In case that we are using temp links we must take part of redirect_url from shopify.app.toml after app launched to connect API
 
-Also database placed localy and will created at this adress by prisma chema: mysql://root:@127.0.0.1:3306/boa_ideas_assignment
+Also database placed localy and will created at this adress by prisma schema: mysql://root:@127.0.0.1:3306/boa_ideas_assignment
 
 
 ## Backend Architecture Overview
